@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.vercel/
+*.tsbuildinfo
+
+# 키가 들어가는 자리. 가이드 11-1) — 공개 저장소에는 .env.example 만 올린다.
+.env
+.env.local
+.env.*.local
