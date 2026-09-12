@@ -1,9 +1,10 @@
 // POST /api/evaluate — 평가 한 번.
 // 여기서 하는 일은 **받은 값을 믿지 않는 것**이다. 키는 환경변수에서만 온다.
 
-import { ALLOWED_MODELS, DEFAULT_MODEL, evaluate } from "../serverlib/evaluator.ts";
-import { checkAccess, fail, json, LIMITS } from "../serverlib/limits.ts";
-import { REVIEWERS } from "../src/lib/rubric.ts";
+import { ALLOWED_MODELS, DEFAULT_MODEL, evaluate } from "../serverlib/evaluator";
+import { checkAccess, fail, json, LIMITS } from "../serverlib/limits";
+import { REVIEWERS } from "../src/lib/rubric";
+import { toNodeHandler } from "../serverlib/node";
 
 export const config = { maxDuration: 120 };
 
@@ -11,7 +12,7 @@ function clip(v: unknown, max: number): string {
   return typeof v === "string" ? v.trim().slice(0, max) : "";
 }
 
-export default async function handler(req: Request): Promise<Response> {
+export async function evaluateRequest(req: Request): Promise<Response> {
   if (req.method !== "POST") return fail("POST 로 부른다.", 405);
 
   const env = process.env as Record<string, string | undefined>;
@@ -73,3 +74,6 @@ export default async function handler(req: Request): Promise<Response> {
     return fail(msg, 502);
   }
 }
+
+// Vercel 이 부르는 모양. 로컬 서버도 같은 것을 쓴다.
+export default toNodeHandler(evaluateRequest);

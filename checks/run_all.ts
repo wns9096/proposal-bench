@@ -12,9 +12,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { CRITERIA, TOTAL_WEIGHT } from "../src/lib/rubric.ts";
-import { ALLOWED_EXT, LIMITS } from "../serverlib/limits.ts";
-import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator.ts";
+import { CRITERIA, TOTAL_WEIGHT } from "../src/lib/rubric";
+import { ALLOWED_EXT, LIMITS } from "../serverlib/limits";
+import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => fs.readFileSync(path.join(ROOT, p), "utf8");
@@ -160,6 +160,40 @@ function 절(title: string): void {
   const 주석파일 = [...read("vite.config.ts").matchAll(/checks\/[a-z_]+\.ts/g)].map((m) => m[0]);
   const 없는것 = 주석파일.filter((f) => !exists(f));
   ok(없는것.length === 0, "주석이 가리키는 검사 파일이 실제로 있다", 없는것.join(" "));
+}
+
+// ───────────────────────────────────────── 3-3. 배포에서만 깨지는 것
+절("배포에서만 깨지는 것 — 로컬 시험으로는 안 잡힌다");
+
+{
+  // ★ 셋 다 실제로 배포하고 나서 알았다. 로컬은 멀쩡했다.
+  //   시험 75건도, esbuild 번들도 통과했는데 Vercel 에서 함수가 죽었다.
+  //   **내가 돌려 본 것과 거기서 도는 것이 같다는 보장이 없다.**
+
+  // (1) 핸들러 서명. Vercel Node 런타임은 (req, res) 로 부른다.
+  //     Request→Response 를 그대로 내보내면 **아무도 응답을 끝내지 않아**
+  //     에러가 아니라 타임아웃으로 죽는다 — 원인을 찾기가 훨씬 어렵다.
+  for (const f of ["api/evaluate.ts", "api/extract.ts", "api/ping.ts"]) {
+    if (!exists(f)) continue;
+    const d = read(f);
+    ok(/export default toNodeHandler\(/.test(d),
+       `${f} 가 toNodeHandler 로 감싸 내보낸다`,
+       /export default async function/.test(d) ? "표준 서명을 그대로 내보내고 있다" : "");
+  }
+
+  // (2) import 확장자. Vercel 은 «../serverlib/limits.ts» 를 못 읽는다.
+  const 확장자 = walk("api").concat(walk("serverlib"), walk("src"), walk("server"),
+                                    walk("scripts"), walk("checks"), walk("tests"))
+    .filter((f) => /from\s+"\.[^"]*\.tsx?"|import\("\.[^"]*\.tsx?"\)/
+      .test(fs.readFileSync(f, "utf8")))
+    .map((f) => path.relative(ROOT, f));
+  ok(확장자.length === 0, "상대 import 에 .ts/.tsx 확장자가 없다", 확장자.join(" "));
+
+  // (3) 로컬 서버가 **배포와 같은 것**을 부르는가. 변환을 두 벌로 두면
+  //     로컬에서 되는 것이 거기서 안 되는 일이 또 생긴다.
+  const dev = read("server/dev.ts");
+  ok(/mod\.default\(req, res\)/.test(dev),
+     "로컬 서버가 api 의 기본 내보내기를 그대로 부른다");
 }
 
 // ───────────────────────────────────────── 4. 모델 이름

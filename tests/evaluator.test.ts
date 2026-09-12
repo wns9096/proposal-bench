@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 import {
   assemble, evaluate, geminiError, parseModelJson, redact, systemPrompt, userPrompt, validateModelOutput,
-} from "../serverlib/evaluator.ts";
-import { CRITERIA } from "../src/lib/rubric.ts";
-import type { Level } from "../src/lib/rubric.ts";
+} from "../serverlib/evaluator";
+import { CRITERIA } from "../src/lib/rubric";
+import type { Level } from "../src/lib/rubric";
 
 const 원문 = "제안서 본문이다. 여기서 4,065건이 빠집니다 — 전체 이탈의 83.9%입니다. 담당은 나이고 일정은 1주다.";
 

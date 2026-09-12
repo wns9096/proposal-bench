@@ -10,7 +10,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator.ts";
+import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const FILE = path.join(ROOT, ".env.local");

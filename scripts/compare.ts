@@ -8,9 +8,9 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { DEFAULT_MODEL, evaluate } from "../serverlib/evaluator.ts";
-import { REVIEWERS } from "../src/lib/rubric.ts";
-import type { Evaluation } from "../src/lib/types.ts";
+import { DEFAULT_MODEL, evaluate } from "../serverlib/evaluator";
+import { REVIEWERS } from "../src/lib/rubric";
+import type { Evaluation } from "../src/lib/types";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 

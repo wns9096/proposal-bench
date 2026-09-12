@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CRITERIA, REVIEWERS } from "./lib/rubric.ts";
-import { LIMITS, ALLOWED_EXT } from "../serverlib/limits.ts";
-import { load, ranking, save, clear } from "./lib/history.ts";
-import { fileName, toMarkdown } from "./lib/report.ts";
-import { mark } from "./lib/mark.tsx";
-import type { Evaluation } from "./lib/types.ts";
+import { CRITERIA, REVIEWERS } from "./lib/rubric";
+import { LIMITS, ALLOWED_EXT } from "../serverlib/limits";
+import { load, ranking, save, clear } from "./lib/history";
+import { fileName, toMarkdown } from "./lib/report";
+import { mark } from "./lib/mark";
+import type { Evaluation } from "./lib/types";
 
 type Tab = "평가" | "결과" | "순위표";
 

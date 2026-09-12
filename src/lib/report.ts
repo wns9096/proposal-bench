@@ -2,7 +2,7 @@
 // 화면에 있는 것과 **같은 값**이어야 한다 — 그래서 점수를 여기서 다시 계산하지 않고
 // Evaluation 에 이미 붙어 있는 것만 옮겨 적는다.
 
-import type { Evaluation } from "./types.ts";
+import type { Evaluation } from "./types";
 
 const bullets = (title: string, xs: string[]): string =>
   xs.length ? `### ${title}\n\n${xs.map((x) => `- ${x}`).join("\n")}\n` : "";

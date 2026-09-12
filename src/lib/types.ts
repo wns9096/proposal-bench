@@ -1,4 +1,4 @@
-import type { Level, Scored, Verdict } from "./rubric.ts";
+import type { Level, Scored, Verdict } from "./rubric";
 
 /** 모델이 항목마다 돌려주는 것. **수준과 근거뿐이고 점수는 없다.** */
 export interface ModelItem {

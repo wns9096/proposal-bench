@@ -4,8 +4,9 @@
 //   글자를 꺼냈다는 것과 그 숫자가 맞다는 것은 다른 말이다.
 //   그래서 응답에 notes 를 같이 보내 «못 읽은 것»을 화면에 띄운다.
 
-import { htmlToText } from "../serverlib/html.ts";
-import { ALLOWED_EXT, extOf, fail, json, LIMITS } from "../serverlib/limits.ts";
+import { htmlToText } from "../serverlib/html";
+import { ALLOWED_EXT, extOf, fail, json, LIMITS } from "../serverlib/limits";
+import { toNodeHandler } from "../serverlib/node";
 
 export const config = { maxDuration: 30 };
 
@@ -62,7 +63,7 @@ export async function extractBuffer(name: string, buf: Uint8Array): Promise<Extr
   throw new Error(`읽을 수 없는 형식 「${ext || "확장자 없음"}」. ${ALLOWED_EXT.join(" · ")} 만 받는다.`);
 }
 
-export default async function handler(req: Request): Promise<Response> {
+export async function extractRequest(req: Request): Promise<Response> {
   if (req.method !== "POST") return fail("POST 로 부른다.", 405);
 
   let form: FormData;
@@ -96,3 +97,6 @@ export default async function handler(req: Request): Promise<Response> {
     return fail(msg, 422);
   }
 }
+
+// Vercel 이 부르는 모양. 로컬 서버도 같은 것을 쓴다.
+export default toNodeHandler(extractRequest);

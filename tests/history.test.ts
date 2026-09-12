@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { clear, load, ranking, save } from "../src/lib/history.ts";
-import type { Store } from "../src/lib/history.ts";
-import type { Evaluation } from "../src/lib/types.ts";
-import { LIMITS } from "../serverlib/limits.ts";
+import { clear, load, ranking, save } from "../src/lib/history";
+import type { Store } from "../src/lib/history";
+import type { Evaluation } from "../src/lib/types";
+import { LIMITS } from "../serverlib/limits";
 
 function 가짜저장소(): Store {
   const m = new Map<string, string>();

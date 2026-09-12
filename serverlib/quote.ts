@@ -6,7 +6,7 @@
 // **맞는 인용이 전부 틀린 인용이 된다.** 공백을 지운 자리표를 만들어 원문 구간을
 // 되찾고, 사람에게 보여 줄 때는 **원문 쪽 글자**를 보여 준다.
 
-import type { QuoteStatus } from "../src/lib/types.ts";
+import type { QuoteStatus } from "../src/lib/types";
 
 export interface QuoteCheck {
   status: QuoteStatus;
