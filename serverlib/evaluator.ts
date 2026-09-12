@@ -121,8 +121,12 @@ export async function callGemini(c: GeminiCall): Promise<string> {
       systemInstruction: { parts: [{ text: c.system }] },
       contents: [{ role: "user", parts: [{ text: c.user }] }],
       generationConfig: {
-        // 같은 문서를 두 번 넣었을 때 크게 달라지지 않게 낮춘다.
-        temperature: 0.2,
+        // ★ 0.2 로 뒀더니 같은 문서·같은 역할이 81.25 ~ 96.25 로 흔들렸다.
+        //   여섯 항목 중 둘셋이 한 수준씩 오갔다. 「어디를 먼저 고칠까」를
+        //   고르는 데는 그래도 쓸 수 있지만, **벤치마크로는 못 쓴다** —
+        //   문서를 고쳐서 오른 것인지 다시 돌려서 오른 것인지 구분이 안 된다.
+        //   0 으로 내린다. 그래도 완전히 같아지지는 않는다(모델이 그렇다).
+        temperature: 0,
         responseMimeType: "application/json",
         responseSchema: responseSchema(),
       },
