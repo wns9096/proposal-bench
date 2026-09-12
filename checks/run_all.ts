@@ -64,7 +64,10 @@ function 절(title: string): void {
   if (exists("dist")) {
     const 샌것 = walk("dist").filter((f) => {
       const s = fs.readFileSync(f, "utf8");
-      return /AIza[0-9A-Za-z\-_]{20,}/.test(s) || /GEMINI_API_KEY\s*[:=]\s*["'][^"']+["']/.test(s);
+      // 키 모양은 하나가 아니다 — AIza… 도 AQ.… 도 본다.
+      return /AIza[0-9A-Za-z\-_]{20,}/.test(s)
+        || /AQ\.[0-9A-Za-z\-_]{20,}/.test(s)
+        || /GEMINI_API_KEY\s*[:=]\s*["'][^"']+["']/.test(s);
     });
     ok(샌것.length === 0, "빌드 결과물(dist)에 키가 없다",
        샌것.map((f) => path.relative(ROOT, f)).join(" "));

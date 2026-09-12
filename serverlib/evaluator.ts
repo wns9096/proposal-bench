@@ -157,7 +157,13 @@ export async function callGemini(c: GeminiCall): Promise<string> {
  */
 export function redact(text: string): string {
   return text
+    // ★ 두 번째 모양은 배포 직전에 알았다. 번들을 훑다가 「AIza」 가 걸려서
+    //   보니 이 정규식 자체였는데, 그때 **쓰고 있는 키가 «AQ.» 로 시작한다**는
+    //   것이 눈에 들어왔다. 내가 아는 한 가지 모양만 지우고 있었다 —
+    //   **지우는 쪽은 넓게 잡는다.** 못 지우면 키가 새고, 넘치게 지우면
+    //   오류 문구가 조금 덜 친절해질 뿐이다.
     .replace(/AIza[0-9A-Za-z\-_]{10,}/g, "<키를 지웠다>")
+    .replace(/AQ\.[0-9A-Za-z\-_]{10,}/g, "<키를 지웠다>")
     .replace(/(key=)[^&\s"']+/gi, "$1<키를 지웠다>");
 }
 

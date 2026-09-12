@@ -169,11 +169,16 @@ describe("오류 문구", () => {
 
   it("★ 오류 문구에 키가 들어가지 않는다 — **Google 이 준 본문에 섞여 있어도**", () => {
     // 이 문구는 화면에도 뜨고 Vercel 로그에도 남는다. 내가 안 찍어도 남이 보내 준다.
-    const 새는본문 = 'Request had invalid key: AIzaSyC0FAKE_key_value_1234567890 (url ?key=AIzaSyC0FAKE_key_value_1234567890)';
-    for (const status of [400, 500, 503]) {
-      const msg = geminiError(status, "m", 새는본문);
-      expect(msg).not.toContain("AIzaSy");
-      expect(msg).toContain("<키를 지웠다>");
+    // ★ 키 모양이 하나가 아니다. 실제로 쓰는 키는 «AQ.» 로 시작했다 —
+    //   «AIza» 만 지우고 있었으면 그 키는 그대로 샜다.
+    for (const 가짜키 of ["AIzaSyC0FAKE_key_value_1234567890",
+                          "AQ.Ab8FAKEkeyvalue1234567890abcdef"]) {
+      const 새는본문 = `Request had invalid key: ${가짜키} (url ?key=${가짜키})`;
+      for (const status of [400, 500, 503]) {
+        const msg = geminiError(status, "m", 새는본문);
+        expect(msg).not.toContain(가짜키);
+        expect(msg).toContain("<키를 지웠다>");
+      }
     }
     expect(redact("아무것도 없는 문장")).toBe("아무것도 없는 문장");
   });
