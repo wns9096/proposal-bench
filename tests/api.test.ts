@@ -1,9 +1,9 @@
 // API 가 **받은 값을 믿지 않는지** 본다. 여기가 뚫리면 남이 내 할당량을 쓴다.
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { evaluateRequest as evaluateHandler } from "../api/evaluate";
-import { extractRequest as extractHandler, extractBuffer } from "../api/extract";
-import { checkAccess, LIMITS } from "../serverlib/limits";
-import { htmlToText } from "../serverlib/html";
+import { evaluateRequest as evaluateHandler } from "../api/evaluate.js";
+import { extractRequest as extractHandler, extractBuffer } from "../api/extract.js";
+import { checkAccess, LIMITS } from "../serverlib/limits.js";
+import { htmlToText } from "../serverlib/html.js";
 
 const post = (body: unknown) =>
   new Request("http://x/api/evaluate", {

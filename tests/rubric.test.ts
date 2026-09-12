@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { CRITERIA, repairOrder, score, scoreOf, TOTAL_WEIGHT, verdictOf } from "../src/lib/rubric";
-import type { Level } from "../src/lib/rubric";
+import { CRITERIA, repairOrder, score, scoreOf, TOTAL_WEIGHT, verdictOf } from "../src/lib/rubric.js";
+import type { Level } from "../src/lib/rubric.js";
 
 const all = (n: Level) => Object.fromEntries(CRITERIA.map((c) => [c.key, n])) as Record<string, Level>;
 

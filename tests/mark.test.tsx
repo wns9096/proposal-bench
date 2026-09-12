@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { isValidElement, type ReactElement } from "react";
-import { mark, plain } from "../src/lib/mark";
-import { geminiError } from "../serverlib/evaluator";
-import { LIMITS } from "../serverlib/limits";
-import { evaluateRequest as evaluateHandler } from "../api/evaluate";
+import { mark, plain } from "../src/lib/mark.js";
+import { geminiError } from "../serverlib/evaluator.js";
+import { LIMITS } from "../serverlib/limits.js";
+import { evaluateRequest as evaluateHandler } from "../api/evaluate.js";
 
 const 굵은것 = (xs: ReturnType<typeof mark>): string[] =>
   xs.filter((x): x is ReactElement<{ children: string }> => isValidElement(x) && x.type === "b")

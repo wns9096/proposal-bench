@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { htmlToText } from "../serverlib/html";
+import { htmlToText } from "../serverlib/html.js";
 
 describe("HTML 에서 글자 꺼내기", () => {
   it("script 안의 수는 본문에 넣지 않고, 못 읽었다고 알린다", () => {

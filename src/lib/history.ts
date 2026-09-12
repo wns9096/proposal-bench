@@ -2,8 +2,8 @@
 // 다른 PC 와 맞춰지지 않고, 브라우저 데이터를 지우면 같이 사라진다.
 // 그래서 화면이 그 사실을 직접 말하게 하고, 여기서는 그 제한을 감추지 않는다.
 
-import { LIMITS } from "../../serverlib/limits";
-import type { Evaluation } from "./types";
+import { LIMITS } from "../../serverlib/limits.js";
+import type { Evaluation } from "./types.js";
 
 const KEY = "proposal-bench:history:v1";
 

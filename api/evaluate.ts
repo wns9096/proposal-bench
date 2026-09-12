@@ -1,10 +1,10 @@
 // POST /api/evaluate — 평가 한 번.
 // 여기서 하는 일은 **받은 값을 믿지 않는 것**이다. 키는 환경변수에서만 온다.
 
-import { ALLOWED_MODELS, DEFAULT_MODEL, evaluate } from "../serverlib/evaluator";
-import { checkAccess, fail, json, LIMITS } from "../serverlib/limits";
-import { REVIEWERS } from "../src/lib/rubric";
-import { toNodeHandler } from "../serverlib/node";
+import { ALLOWED_MODELS, DEFAULT_MODEL, evaluate } from "../serverlib/evaluator.js";
+import { checkAccess, fail, json, LIMITS } from "../serverlib/limits.js";
+import { REVIEWERS } from "../src/lib/rubric.js";
+import { toNodeHandler } from "../serverlib/node.js";
 
 export const config = { maxDuration: 120 };
 

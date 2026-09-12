@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkQuote, hasKorean } from "../serverlib/quote";
+import { checkQuote, hasKorean } from "../serverlib/quote.js";
 
 const 원문 = [
   "## 현황",

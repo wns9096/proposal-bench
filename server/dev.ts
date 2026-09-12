@@ -39,9 +39,9 @@ function loadEnv(): void {
 type NodeHandler = (req: http.IncomingMessage, res: http.ServerResponse) => Promise<void> | void;
 
 const ROUTES: Record<string, () => Promise<{ default: NodeHandler }>> = {
-  "/api/evaluate": () => import("../api/evaluate"),
-  "/api/extract": () => import("../api/extract"),
-  "/api/ping": () => import("../api/ping"),
+  "/api/evaluate": () => import("../api/evaluate.js"),
+  "/api/extract": () => import("../api/extract.js"),
+  "/api/ping": () => import("../api/ping.js"),
 };
 
 async function main(): Promise<void> {

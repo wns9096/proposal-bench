@@ -4,9 +4,9 @@
 //   글자를 꺼냈다는 것과 그 숫자가 맞다는 것은 다른 말이다.
 //   그래서 응답에 notes 를 같이 보내 «못 읽은 것»을 화면에 띄운다.
 
-import { htmlToText } from "../serverlib/html";
-import { ALLOWED_EXT, extOf, fail, json, LIMITS } from "../serverlib/limits";
-import { toNodeHandler } from "../serverlib/node";
+import { htmlToText } from "../serverlib/html.js";
+import { ALLOWED_EXT, extOf, fail, json, LIMITS } from "../serverlib/limits.js";
+import { toNodeHandler } from "../serverlib/node.js";
 
 export const config = { maxDuration: 30 };
 

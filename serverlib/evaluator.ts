@@ -6,10 +6,10 @@
 // 모델에게 총점을 맡기면 같은 문서가 실행할 때마다 다른 점수를 받는다.
 // 수준만 받으면 흔들리는 폭이 **한 항목 ¼ 배점**으로 묶인다.
 
-import { CRITERIA, isLevel, reviewerOf, score } from "../src/lib/rubric";
-import type { Level } from "../src/lib/rubric";
-import type { EvaluatedItem, Evaluation, ModelItem, ModelOutput } from "../src/lib/types";
-import { checkQuote, hasKorean } from "./quote";
+import { CRITERIA, isLevel, reviewerOf, score } from "../src/lib/rubric.js";
+import type { Level } from "../src/lib/rubric.js";
+import type { EvaluatedItem, Evaluation, ModelItem, ModelOutput } from "../src/lib/types.js";
+import { checkQuote, hasKorean } from "./quote.js";
 
 export const DEFAULT_MODEL = "gemini-3.5-flash-lite";
 

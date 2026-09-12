@@ -12,9 +12,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
-import { CRITERIA, TOTAL_WEIGHT } from "../src/lib/rubric";
-import { ALLOWED_EXT, LIMITS } from "../serverlib/limits";
-import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator";
+import { CRITERIA, TOTAL_WEIGHT } from "../src/lib/rubric.js";
+import { ALLOWED_EXT, LIMITS } from "../serverlib/limits.js";
+import { ALLOWED_MODELS, DEFAULT_MODEL } from "../serverlib/evaluator.js";
 
 const ROOT = path.resolve(import.meta.dirname, "..");
 const read = (p: string) => fs.readFileSync(path.join(ROOT, p), "utf8");
@@ -181,13 +181,22 @@ function 절(title: string): void {
        /export default async function/.test(d) ? "표준 서명을 그대로 내보내고 있다" : "");
   }
 
-  // (2) import 확장자. Vercel 은 «../serverlib/limits.ts» 를 못 읽는다.
-  const 확장자 = walk("api").concat(walk("serverlib"), walk("src"), walk("server"),
-                                    walk("scripts"), walk("checks"), walk("tests"))
-    .filter((f) => /from\s+"\.[^"]*\.tsx?"|import\("\.[^"]*\.tsx?"\)/
-      .test(fs.readFileSync(f, "utf8")))
-    .map((f) => path.relative(ROOT, f));
-  ok(확장자.length === 0, "상대 import 에 .ts/.tsx 확장자가 없다", 확장자.join(" "));
+  // (2) import 확장자. **Vercel 은 번들을 만들지 않고 Node ESM 그대로 돌린다.**
+  //     그래서 «../serverlib/limits.ts» 도 «../serverlib/limits» 도 못 읽는다 —
+  //     둘 다 배포에 올려 보고 확인했다. 상대 경로는 **.js 로 끝나야** 한다
+  //     (컴파일된 .js 를 가리킨다. TypeScript 의 표준 방식이다).
+  const 나쁜것: string[] = [];
+  for (const f of walk("api").concat(walk("serverlib"), walk("src"), walk("server"),
+                                     walk("scripts"), walk("checks"), walk("tests"))) {
+    const d = fs.readFileSync(f, "utf8");
+    for (const m of d.matchAll(/(?:from\s+"|import\(")(\.[^"]*)"/g)) {
+      const spec = m[1]!;
+      if (spec.endsWith(".js") || spec.endsWith(".css")) continue;
+      나쁜것.push(`${path.relative(ROOT, f)} → ${spec}`);
+    }
+  }
+  ok(나쁜것.length === 0, "상대 import 가 .js 로 끝난다 — Vercel 은 번들하지 않는다",
+     나쁜것.slice(0, 4).join(" · "));
 
   // (3) 로컬 서버가 **배포와 같은 것**을 부르는가. 변환을 두 벌로 두면
   //     로컬에서 되는 것이 거기서 안 되는 일이 또 생긴다.
